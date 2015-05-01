@@ -43,44 +43,44 @@ class HTU21D(object):
         self._logger.debug('Raw temp 0x{0:X} ({1})'.format(raw & 0xFFFF, raw))
         return raw
 
-        def read_raw_humidity(self):
-            """Reads the raw relative humidity from the sensor."""
-            msb, lsb, chsum = self._device.readList(HTU21D_TRIGGERHUMIDITYCMD, 3)
-            raw = (msb << 8) + lsb
-            self._logger.debug('Raw relative humidity 0x{0:04X} ({1})'.format(raw & 0xFFFF, raw))
-            return raw
+    def read_raw_humidity(self):
+        """Reads the raw relative humidity from the sensor."""
+        msb, lsb, chsum = self._device.readList(HTU21D_TRIGGERHUMIDITYCMD, 3)
+        raw = (msb << 8) + lsb
+        self._logger.debug('Raw relative humidity 0x{0:04X} ({1})'.format(raw & 0xFFFF, raw))
+        return raw
 
-        def read_temperature(self):
-            """Gets the temperature in degrees celsius."""
-            raw = self.read_raw_temp()
-            temp = float(raw)/65536 * 175.72
-            temp -= 46.85
-            self._logger.debug('Temperature {0:.2f} C'.format(temp))
-            return temp
+    def read_temperature(self):
+        """Gets the temperature in degrees celsius."""
+        raw = self.read_raw_temp()
+        temp = float(raw)/65536 * 175.72
+        temp -= 46.85
+        self._logger.debug('Temperature {0:.2f} C'.format(temp))
+        return temp
 
-        def read_humidity(self):
-            """Gets the relative humidity."""
-            raw = self.read_raw_humidity()
-            rh = float(raw)/65536 * 125
-            rh -= 6
-            self._logger.debug('Relative Humidity {0:.2f} %'.format(rh))
-            return rh
+    def read_humidity(self):
+        """Gets the relative humidity."""
+        raw = self.read_raw_humidity()
+        rh = float(raw)/65536 * 125
+        rh -= 6
+        self._logger.debug('Relative Humidity {0:.2f} %'.format(rh))
+        return rh
 
-        def read_dewpoint(self):
-            """Calculates the dew point temperature."""
-            # Calculation taken straight from datasheet.
-            ppressure = self.read_partialpressure()
-            humidity = self.read_humidity()
-            den = math.log10(humidity * ppressure / 100) - HTU21D_A
-            dew = -(HTU21D_B / den + HTU21D_C)
-            self._logger.debug('Dew Point {0:.2f} C'.format(dew))
-            return dew
+    def read_dewpoint(self):
+        """Calculates the dew point temperature."""
+        # Calculation taken straight from datasheet.
+        ppressure = self.read_partialpressure()
+        humidity = self.read_humidity()
+        den = math.log10(humidity * ppressure / 100) - HTU21D_A
+        dew = -(HTU21D_B / den + HTU21D_C)
+        self._logger.debug('Dew Point {0:.2f} C'.format(dew))
+        return dew
 
-        def read_partialpressure(self):
-            """Calculate the partial pressure in mmHg at ambient temperature."""
-            Tamb = self.read_temperature()
-            exp = HTU21D_B / (Tamb + HTU21D_C)
-            exp = HTU21D_A - exp
-            pp = 10 ** exp
-            self._logger.debug('Partial Pressure {0:.2f} mmHg'.format(pp))
-            return pp
+    def read_partialpressure(self):
+        """Calculate the partial pressure in mmHg at ambient temperature."""
+        Tamb = self.read_temperature()
+        exp = HTU21D_B / (Tamb + HTU21D_C)
+        exp = HTU21D_A - exp
+        pp = 10 ** exp
+        self._logger.debug('Partial Pressure {0:.2f} mmHg'.format(pp))
+        return pp

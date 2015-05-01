@@ -39,9 +39,8 @@ sensor = HTU21D.HTU21D()
 # Optionally you can override the bus number:
 #sensor = HTU21D.HTU21D(busnum=2)
 
-# You can also optionally change the HTU21D mode to one of HTU21D_HOLDMASTER, HTU21D_NOHOLDMASTER.
-# See the HTU21D datasheet for more details on the meanings of each mode (accuracy and power consumption
-# are primarily the differences).  The default mode is HTU21D_HOLDMASTER.
+# HTU21D communication mode can be set to one of HTU21D_HOLDMASTER and HTU21D_NOHOLDMASTER.
+# Actually only HTU21D_HOLDMASTER is supported.
 #sensor = HTU21D.HTU21D(mode=HTU21D.HTU21D_HOLDMASTER)
 
 print 'Temp = {0:0.2f} *C'.format(sensor.read_temperature())
