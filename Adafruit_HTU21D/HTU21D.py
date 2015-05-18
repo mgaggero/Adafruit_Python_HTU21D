@@ -23,6 +23,10 @@ HTU21D_B = 1762.39
 HTU21D_C = 235.66
 
 
+class HTU21DException(Exception):
+    pass
+
+
 class HTU21D(object):
     def __init__(self, mode=HTU21D_HOLDMASTER, address=HTU21D_I2CADDR, i2c=None, **kwargs):
         self._logger = logging.getLogger('Adafruit_HTU21D.HTU21D')
@@ -36,17 +40,36 @@ class HTU21D(object):
             i2c = I2C
         self._device = i2c.get_i2c_device(address, **kwargs)
 
+    def crc_check(self, msb, lsb, crc):
+        remainder = ((msb << 8) | lsb) << 8
+        remainder |= crc
+        divsor = 0x988000
+        for i in range(0, 16):
+            if remainder & 1 << (23 - i):
+                remainder ^= divsor
+            divsor >>= 1
+        if remainder == 0:
+            return True
+        else:
+            return False
+
     def read_raw_temp(self):
         """Reads the raw temperature from the sensor."""
         msb, lsb, chsum = self._device.readList(HTU21D_TRIGGERTEMPCMD, 3)
+        if self.crc_check(msb, lsb, chsum) is False:
+            raise HTU21DException("CRC Exception")
         raw = (msb << 8) + lsb
+        raw &= 0xFFFC
         self._logger.debug('Raw temp 0x{0:X} ({1})'.format(raw & 0xFFFF, raw))
         return raw
 
     def read_raw_humidity(self):
         """Reads the raw relative humidity from the sensor."""
         msb, lsb, chsum = self._device.readList(HTU21D_TRIGGERHUMIDITYCMD, 3)
+        if self.crc_check(msb, lsb, chsum) is False:
+            raise HTU21DException("CRC Exception")
         raw = (msb << 8) + lsb
+        raw &= 0xFFFC
         self._logger.debug('Raw relative humidity 0x{0:04X} ({1})'.format(raw & 0xFFFF, raw))
         return raw
 
