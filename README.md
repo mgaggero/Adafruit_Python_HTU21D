@@ -11,18 +11,18 @@ Partially based on the code of the Adafruit_Python_BMP library written by Tony D
 * read/write user reg is not implemented.
 
 ## Currently supported platforms
-                 Board | Options
----------------------- | ---------------------------
-Raspberry PI 1 Model B | ***busnum=0***
-Raspberry PI 2 Model B | *busnum* default or ***1***
-Raspberry PI 3 Model B | *busnum* default or ***1***
+|                  Board | Options                     |
+| ---------------------- | --------------------------- |
+| Raspberry PI 1 Model B | ***busnum=0***              |
+| Raspberry PI 2 Model B | *busnum* default or ***1*** |
+| Raspberry PI 3 Model B | *busnum* default or ***1*** |
 
 ## Installation
 
 ### Setuptools
 The following commands install HTU21D library *system wide*:
 
-~~~bash
+~~~console
 git clone https://github.com/mgaggero/Adafruit_Python_HTU21D.git
 cd Adafruit_Python_HTU21D
 sudo python setup.py install
@@ -30,13 +30,13 @@ sudo python setup.py install
 
 In order to install the library on the user's home directory, a *local installation* that not requires sudo/root privileges, the last command should be:
 
-~~~sh
+~~~console
 python setup.py install --user
 ~~~
 
 And the library will be installed in the folder 
 
-~~~sh
+~~~console
 $HOME/.local/lib/python3.6/site-packages/
 ~~~
 
@@ -44,7 +44,7 @@ $HOME/.local/lib/python3.6/site-packages/
 
 The following commands install HTU21D library *system wide*:
 
-~~~bash
+~~~console
 git clone https://github.com/mgaggero/Adafruit_Python_HTU21D.git
 cd Adafruit_Python_HTU21D
 sudo pip install .
@@ -52,13 +52,13 @@ sudo pip install .
 
 In order to install the library on the user's home directory, a *local installation* that not requires sudo/root privileges, the last command should be:
 
-~~~sh
+~~~console
 pip install . --user
 ~~~
 
 And the library will be installed in the folder 
 
-~~~sh
+~~~console
 $HOME/.local/lib/python3.6/site-packages/
 ~~~
 
@@ -71,7 +71,7 @@ Accessing **I2C** devices usually requires root privileges or privileged group m
 * creating an '**i2c**' group, assigning the i2c device to it and adding the user to that group.
 
 ### Creation of the 'i2c' group
-~~~sh
+~~~console
 sudo groupadd -r i2c        # creates the 'i2c' group as a 'system' group
 sudo chgrp i2c /dev/i2c*    # changes group ownership of the i2c device files
 sudo chmod g+rw /dev/i2c*   # allow owning group to read/write to the devices
