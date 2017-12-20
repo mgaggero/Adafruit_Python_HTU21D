@@ -66,6 +66,8 @@ class HTU21DException(Exception):
     pass
 
 
+# Based on 'joan' post on Raspberrypi.Org Forum:
+# https://www.raspberrypi.org/forums/viewtopic.php?p=600515#p600515
 class HTU21DBusProtocol(object):
     def __init__(self, busnum = I2C_BUS, address = HTU21D_I2CADDR):
         self._busnum  = busnum

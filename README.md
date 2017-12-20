@@ -2,7 +2,7 @@
 
 Python Library for the Adafruit HTU21D-F Humidity/Temperature sensor breakout board.
 
-It does not use any other library than the standard ones usually provided with the OS Python distribution.
+It does not depend on any other library than the standard ones usually provided with the OS Python distribution.
 
 HTU21D specifications are based on the [Te MEAS Datasheet](http://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Data+Sheet%7FHPC199_6%7FA6%7Fpdf%7FEnglish%7FENG_DS_HPC199_6_A6.pdf%7FHPP845E031).
 
